@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<title>Кері байланыс</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:#8ed7ff}
+body{background:linear-gradient(180deg,#74cfff 0%,#c6f1ff 42%,#d9f7b0 72%,#61c94b 100%);position:relative;color:#24422a}
+.sky{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.sun{position:absolute;right:46px;top:28px;width:76px;height:76px;border-radius:50%;background:radial-gradient(circle,#fff176 45%,#ffd600 100%);box-shadow:0 0 55px 20px rgba(255,214,0,.35)}
+.cloud{position:absolute;background:white;border-radius:999px;opacity:.82;animation:moveCloud linear infinite}
+.cloud:before,.cloud:after{content:"";position:absolute;background:white;border-radius:50%}
+.c1{width:130px;height:36px;top:44px;left:-150px;animation-duration:32s}.c1:before{width:58px;height:58px;left:18px;top:-30px}.c1:after{width:48px;height:48px;left:66px;top:-24px}
+.c2{width:100px;height:28px;top:120px;left:-120px;animation-duration:45s;animation-delay:-17s}.c2:before{width:44px;height:44px;left:14px;top:-22px}.c2:after{width:36px;height:36px;left:50px;top:-17px}
+@keyframes moveCloud{to{transform:translateX(calc(100vw + 180px))}}
+.header{position:relative;z-index:5;height:72px;display:flex;align-items:center;justify-content:space-between;padding:10px 24px;background:rgba(255,255,255,.92);border-bottom:5px solid #ffd54f;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+.title{font-size:clamp(1.25rem,2.6vw,2rem);font-weight:900;color:#2e7d32;text-shadow:2px 2px 0 #ffec8b;white-space:nowrap}
+.counter{font-size:clamp(1rem,2vw,1.45rem);font-weight:900;color:#fff;background:linear-gradient(135deg,#ffb300,#ff7043);padding:8px 18px;border-radius:999px;box-shadow:0 4px 0 rgba(160,70,0,.25);white-space:nowrap}
+.main{position:relative;z-index:2;height:calc(100vh - 72px);display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:16px;padding:16px 18px 20px}
+.leftPanel{background:rgba(255,255,255,.9);border:4px solid rgba(255,213,79,.8);border-radius:28px;padding:14px;box-shadow:0 10px 28px rgba(0,0,0,.12);display:flex;flex-direction:column;gap:12px;min-height:0}
+.faceTitle{text-align:center;font-size:clamp(1.1rem,2vw,1.45rem);font-weight:900;color:#5d4037;background:#fff8e1;border-radius:18px;padding:10px}
+.faces{display:grid;grid-template-columns:1fr;gap:12px;flex:1}
+.faceBtn{border:none;border-radius:24px;background:linear-gradient(145deg,#fffde7,#fff8c5);border:4px solid #ffe082;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;cursor:pointer;box-shadow:0 5px 0 rgba(140,100,0,.16),0 6px 16px rgba(0,0,0,.12);transition:.15s;min-height:0}
+.faceBtn:active,.faceBtn.active{transform:translateY(4px);box-shadow:0 1px 0 rgba(140,100,0,.16),0 3px 10px rgba(0,0,0,.12);outline:6px solid rgba(76,175,80,.18)}
+.faceEmoji{font-size:clamp(3.5rem,7vw,5.8rem);line-height:1}
+.faceText{font-size:clamp(.9rem,1.6vw,1.2rem);font-weight:900;color:#4e342e}
+.board{background:rgba(255,255,255,.88);border-radius:30px;padding:16px;box-shadow:0 10px 28px rgba(0,0,0,.12);display:flex;flex-direction:column;min-width:0;min-height:0}
+.question{font-size:clamp(1.15rem,2.2vw,1.8rem);text-align:center;font-weight:900;color:#1565c0;margin-bottom:12px;background:#e3f2fd;border-radius:22px;padding:10px 12px}
+.tasks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex:1;min-height:0}
+.task{position:relative;border:none;border-radius:26px;background:linear-gradient(145deg,#ffffff,#f1fff2);border:4px solid #b7e4bb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 5px 0 rgba(40,120,50,.18),0 8px 18px rgba(0,0,0,.1);transition:.16s;padding:10px;min-width:0;overflow:hidden}
+.task:active,.task.active{transform:translateY(4px) scale(.98);box-shadow:0 1px 0 rgba(40,120,50,.18),0 3px 10px rgba(0,0,0,.1);border-color:#43a047;background:linear-gradient(145deg,#e8f5e9,#ffffff)}
+.taskIcon{font-size:clamp(3rem,5.8vw,5.4rem);line-height:1;filter:drop-shadow(0 4px 2px rgba(0,0,0,.08))}
+.taskText{text-align:center;font-size:clamp(.9rem,1.35vw,1.18rem);line-height:1.08;color:#263238;font-weight:900}
+.tick{position:absolute;right:10px;top:8px;width:42px;height:42px;border-radius:50%;background:#4caf50;color:white;font-size:1.8rem;display:none;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(76,175,80,.3)}
+.task.active .tick{display:flex}
+.bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px}
+.summary{flex:1;background:#fff8e1;border-radius:20px;padding:10px 14px;color:#5d4037;font-size:clamp(.9rem,1.3vw,1.15rem);font-weight:900;min-height:48px;display:flex;align-items:center}
+.btn{border:none;border-radius:18px;padding:12px 18px;font-family:'Nunito',sans-serif;font-size:clamp(.95rem,1.4vw,1.15rem);font-weight:900;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.18);transition:.12s;white-space:nowrap}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.18)}
+.clear{background:linear-gradient(135deg,#ffcc80,#ff7043);color:white}
+.finish{background:linear-gradient(135deg,#81c784,#2e7d32);color:white}
+.toast{position:fixed;z-index:50;left:50%;bottom:26px;transform:translateX(-50%);background:rgba(20,20,20,.82);color:white;border-radius:999px;padding:12px 24px;font-size:1.25rem;font-weight:900;opacity:0;pointer-events:none;transition:.25s;white-space:nowrap}
+.toast.show{opacity:1}
+.win{position:fixed;z-index:100;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px)}
+.win.show{display:flex}
+.winbox{background:linear-gradient(145deg,#fffde7,#e8f5e9);border:5px solid #ffd54f;border-radius:34px;padding:34px 44px;max-width:760px;text-align:center;box-shadow:0 25px 70px rgba(0,0,0,.32);animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(.3) rotate(-8deg);opacity:0}to{transform:scale(1);opacity:1}}
+.winIcon{font-size:4rem}.winbox h2{font-size:2.2rem;color:#2e7d32;margin:8px 0}.winText{font-size:1.2rem;color:#4e342e;font-weight:900;line-height:1.35;margin-bottom:18px}.again{background:linear-gradient(135deg,#64b5f6,#1565c0);color:white}
+@media(max-width:900px){
+ .main{grid-template-columns:210px 1fr;padding:10px;gap:10px}.tasks{grid-template-columns:repeat(2,1fr);gap:9px}.leftPanel{padding:10px}.faceEmoji{font-size:3.8rem}.taskIcon{font-size:3.7rem}.header{height:64px;padding:8px 14px}.main{height:calc(100vh - 64px)}
+}
+</style>
+</head>
+<body>
+<div class="sky"><div class="sun"></div><div class="cloud c1"></div><div class="cloud c2"></div></div>
+<header class="header">
+  <div class="title">🌈 Кері байланыс</div>
+  <div class="counter">⭐ <span id="count">0</span> / 7</div>
+</header>
+<main class="main">
+  <section class="leftPanel">
+    <div class="faceTitle">Көңіл күйім</div>
+    <div class="faces">
+      <button class="faceBtn" data-face="Керемет"><span class="faceEmoji">😊</span><span class="faceText">Керемет</span></button>
+      <button class="faceBtn" data-face="Сұрағым бар"><span class="faceEmoji">🙋</span><span class="faceText">Сұрағым бар</span></button>
+      <button class="faceBtn" data-face="Түсінбедім"><span class="faceEmoji">🤔</span><span class="faceText">Түсінбедім</span></button>
+    </div>
+  </section>
+  <section class="board">
+    <div class="question">Бүгін сабақта не істедік? Ұнағанын бас!</div>
+    <div class="tasks" id="tasks">
+      <button class="task" data-title="Дыбыстарды тыңдадым"><span class="tick">✓</span><span class="taskIcon">👂</span><span class="taskText">Дыбыстарды<br>тыңдадым</span></button>
+      <button class="task" data-title="Дауысты, дауыссызды ажыраттым"><span class="tick">✓</span><span class="taskIcon">🔴🔵</span><span class="taskText">Дауысты, дауыссызды<br>ажыраттым</span></button>
+      <button class="task" data-title="Буын санын анықтадым"><span class="tick">✓</span><span class="taskIcon">🐑🦁</span><span class="taskText">Буын санын<br>анықтадым</span></button>
+      <button class="task" data-title="Сурет бойынша сөйлем құрадым"><span class="tick">✓</span><span class="taskIcon">🖼️💬</span><span class="taskText">Сурет бойынша<br>сөйлем құрадым</span></button>
+      <button class="task" data-title="Сөйлемнің қатесін таптым"><span class="tick">✓</span><span class="taskIcon">🔍✏️</span><span class="taskText">Сөйлемнің қатесін<br>таптым</span></button>
+      <button class="task" data-title="Көлеңкесінен таныдым"><span class="tick">✓</span><span class="taskIcon">🏠🔦</span><span class="taskText">Көлеңкесінен<br>таныдым</span></button>
+      <button class="task" data-title="Артығын атадым"><span class="tick">✓</span><span class="taskIcon">🍎📚</span><span class="taskText">Артығын<br>атадым</span></button>
+    </div>
+    <div class="bottom">
+      <button class="btn clear" id="clearBtn">Тазалау</button>
+      <button class="btn finish" id="finishBtn">Қорытынды</button>
+    </div>
+  </section>
+</main>
+<div class="toast" id="toast"></div>
+<div class="win" id="win">
+  <div class="winbox">
+    <div class="winIcon">🎉🌟👏</div>
+    <h2>Жарайсыңдар!</h2>
+    <div class="winText" id="winText">Бүгінгі сабақ өте жақсы өтті.</div>
+    <button class="btn again" onclick="closeWin()">Жалғастыру</button>
+  </div>
+</div>
+<script>
+const tasks=[...document.querySelectorAll('.task')];
+const faces=[...document.querySelectorAll('.faceBtn')];
+const count=document.getElementById('count');
+const summary=document.getElementById('summary');
+const toastBox=document.getElementById('toast');
+const win=document.getElementById('win');
+const winText=document.getElementById('winText');
+let face='';
+let toastTimer;
+function toast(text){
+  toastBox.textContent=text;
+  toastBox.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>toastBox.classList.remove('show'),1100);
+}
+function update(){
+  const selected=tasks.filter(t=>t.classList.contains('active')).map(t=>t.dataset.title);
+  count.textContent=selected.length;
+  if(selected.length===0){
+    summary.textContent=face ? 'Көңіл күй: '+face+'. Енді тапсырмаларды таңда.' : 'Балалар сабақтағы тапсырмаларды таңдайды.';
+  }else{
+    summary.textContent=(face?'Көңіл күй: '+face+'. ':'')+'Таңдалды: '+selected.join(', ')+'.';
+  }
+}
+tasks.forEach(t=>{
+  t.addEventListener('click',()=>{
+    t.classList.toggle('active');
+    toast(t.classList.contains('active')?'✅ '+t.dataset.title:'↩️ Алынды');
+    update();
+  });
+});
+faces.forEach(f=>{
+  f.addEventListener('click',()=>{
+    faces.forEach(x=>x.classList.remove('active'));
+    f.classList.add('active');
+    face=f.dataset.face;
+    toast('😊 '+face);
+    update();
+  });
+});
+document.getElementById('clearBtn').addEventListener('click',()=>{
+  tasks.forEach(t=>t.classList.remove('active'));
+  faces.forEach(f=>f.classList.remove('active'));
+  face='';
+  update();
+  toast('Тазаланды');
+});
+document.getElementById('finishBtn').addEventListener('click',()=>{
+  const selected=tasks.filter(t=>t.classList.contains('active')).map(t=>t.dataset.title);
+  const f=face?`Көңіл күй: ${face}. `:'';
+  winText.textContent=selected.length ? f+'Балалар бүгін '+selected.join(', ').toLowerCase()+'.' : f+'Балалар сабақ туралы өз пікірін білдірді.';
+  win.classList.add('show');
+});
+function closeWin(){win.classList.remove('show')}
+</script>
+</body>
+</html>
